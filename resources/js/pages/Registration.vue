@@ -50,7 +50,7 @@ export default {
      this.$axios
       .get("http://127.0.0.1:8000/api/categories")
       .then((response) => {
-        this.categories = response.data;
+        this.categories = response.data.data;
         this.index = this.categories.length
       });
   },
@@ -100,7 +100,6 @@ export default {
           }
         )
           .then((response) => {
-            console.log(response);
               window.location.href = "/user/" + response.data.user_id;
 
           })

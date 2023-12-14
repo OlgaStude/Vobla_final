@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class registerRequest extends FormRequest
+class updateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,26 +21,20 @@ class registerRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+     public function rules()
     {
         return [
-            'login' => 'required|unique:users|regex:/^[a-zA-Z]+$/u',
-            'password' => 'required|min:8',
             'avatar' => 'mimes:jpg,jpeg,png',
-            'email' => 'unique:user_infos'
+            'login' => 'unique:users|regex:/^[a-zA-Z]+$/u',
         ];
     }
 
     public function messages()
     {
         return [
-            'login.required' => 'Логин обязателен',
+            'avatar.mimes' => 'Изображения могут быть только jpg, jpeg, png форматов',
             'login.unique' => 'Этот логин уже занят',
             'login.regex' => 'Логин может быть только латиницей',
-            'email.unique' => 'Эта почта уже занята',
-            'password.required' => 'Пароль обязателен',
-            'password.min' => 'Пароль не менее 8 символов',
-            'avatar.mimes' => 'Изображения могут быть только jpg, jpeg, png форматов',
         ];
     }
 }

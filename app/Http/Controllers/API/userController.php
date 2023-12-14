@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\loginReques;
+use App\Http\Requests\passwordRequest;
 use App\Http\Requests\registerRequest;
 use App\Http\Requests\registrationRequest;
+use App\Http\Requests\updateRequest;
 use App\Models\Categories;
 use App\Models\User;
 use App\Models\userInfo;
@@ -15,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -33,7 +36,7 @@ class UserController extends Controller
             
             foreach($req->categories as $category){
                 $category_id = Categories::where('name', '=', $category)->get();
-                UsersCategories::create(['users_id' => $user->id, 'categories_id' => $category_id[0]->id]);
+                UsersCategories::create(['users_id' => $user->id, 'categories_id' => $category_id[0]->id, 'is_admin' => 0]);
             }
         }
         userInfo::create(['users_id' => $user->id, 'name' => $req->name, 'avatar' => $pfp_name, 'email' => $req->email]);
@@ -74,4 +77,44 @@ class UserController extends Controller
             return response()->json(['status' => 422, 'message' => $e]);
         }
     }
+
+
+    public function updateuser(updateRequest $req){
+
+
+        userInfo::where("id", Auth::user()->id)->update(["name" => $req->name]);
+        if($req->login != 'nonewlogin'){
+            User::where("id", Auth::user()->id)->update(["login" => $req->login]);
+        }
+        if($req->hasFile('avatar')){
+            $req->file('avatar')->store('public/profile_pics');
+            $material_name = $req->file('avatar')->hashName();
+
+            $check = userInfo::where("id", '=', Auth::user()->id)->get();
+
+            if($check[0]->avatar != 'default_avatar.png'){
+                Storage::delete("public/profile_pics/".userInfo::where("id", '=', Auth::user()->id)->avatar);
+            }
+
+
+            userInfo::where("id", Auth::user()->id)->update(["avatar" => $material_name]);
+
+        }
+
+
+    }
+
+
+    public function changepassword(passwordRequest $req){
+
+        $check = Hash::check($req->password, User::find(Auth::user()->id)->password);
+
+        if(!$check){
+            return response()->json(['status' => 400, 'message' => 'Неверный пароль']);
+        }
+        User::where("id", Auth::user()->id)->update(["password" => Hash::make($req->new_password)]);
+
+
+    }
+
 }

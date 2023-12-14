@@ -2,8 +2,10 @@
   <div class="container">
     <div class="navbar-bav" v-if="isLogged">
       <router-link to="/dashboard">Dashboard</router-link>
+      <router-link v-if="user.is_admin" to="/admin">Админ</router-link>
       <a href="#" @click="logout">logout</a>
-    </div>
+      <a :href="$router.resolve({ name: 'userPage', params: { id: user.id } }).href">Личка</a>
+      </div>
     <div class="" v-else>
       <router-link to="/">Home</router-link>
       <router-link to="/login">Login</router-link>
@@ -20,6 +22,7 @@ export default {
   data() {
     return {
       isLogged: false,
+      user: window.Laravel.user
     };
   },
   created() {

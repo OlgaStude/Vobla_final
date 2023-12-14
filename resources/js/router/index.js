@@ -5,6 +5,7 @@ import Login from '../pages/Login.vue'
 import Registration from '../pages/Registration.vue'
 import userPage from '../pages/userPage.vue'
 import Admin from '../pages/Admin.vue'
+import UpdatePage from '../pages/UpdatePage.vue'
 
 export const routes = [
     {
@@ -31,6 +32,11 @@ export const routes = [
         name: 'Admin',
         path: '/admin',
         component: Admin
+    },
+    {
+        name: 'UpdatePage',
+        path: '/updateinfo',
+        component: UpdatePage
     },
 ]
 

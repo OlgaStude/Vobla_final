@@ -1,5 +1,7 @@
 <template>
-  <div class="row">Dashboard</div>
+  <div class="row">
+    <a href="/updateinfo">Редактировать информацию</a>
+    Dashboard</div>
 </template>
 
 <script>
