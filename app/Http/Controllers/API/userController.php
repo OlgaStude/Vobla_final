@@ -9,6 +9,11 @@ use App\Http\Requests\registerRequest;
 use App\Http\Requests\registrationRequest;
 use App\Http\Requests\updateRequest;
 use App\Models\Categories;
+use App\Models\Chat_messages;
+use App\Models\Friends;
+use App\Models\friendsRequest;
+use App\Models\Post;
+use App\Models\post_category;
 use App\Models\User;
 use App\Models\userInfo;
 use App\Models\UsersCategories;
@@ -31,7 +36,7 @@ class UserController extends Controller
             $pfp_name = 'default_avatar.png';
         }
 
-        $user = User::create(['password' => Hash::make($req->password), 'login' => $req->login]);
+        $user = User::create(['password' => Hash::make($req->password), 'login' => $req->login, 'is_admin' => 0]);
         if($req->categories != []){
             
             foreach($req->categories as $category){
@@ -81,7 +86,6 @@ class UserController extends Controller
 
     public function updateuser(updateRequest $req){
 
-
         userInfo::where("id", Auth::user()->id)->update(["name" => $req->name]);
         if($req->login != 'nonewlogin'){
             User::where("id", Auth::user()->id)->update(["login" => $req->login]);
@@ -93,7 +97,8 @@ class UserController extends Controller
             $check = userInfo::where("id", '=', Auth::user()->id)->get();
 
             if($check[0]->avatar != 'default_avatar.png'){
-                Storage::delete("public/profile_pics/".userInfo::where("id", '=', Auth::user()->id)->avatar);
+                $avatar = userInfo::where("users_id", '=', Auth::user()->id)->get();
+                Storage::delete("public/profile_pics/".$avatar[0]->avatar);
             }
 
 
@@ -115,6 +120,22 @@ class UserController extends Controller
         User::where("id", Auth::user()->id)->update(["password" => Hash::make($req->new_password)]);
 
 
+    }
+
+
+    public function deleteUser(){
+
+        Chat_messages::where('sender_id', '=', Auth::user()->id)->orWhere('reciewer_id', '=', Auth::user()->id)->delete();
+        Friends::where('user_id', '=', Auth::user()->id)->orWhere('friend_id', '=', Auth::user()->id)->delete();
+        friendsRequest::where('reciever_id', '=', Auth::user()->id)->orWhere('sender_id', '=', Auth::user()->id)->delete();
+        $posts = Post::where('users_id', '=', Auth::user()->id)->get();
+        foreach($posts as $post){
+            post_category::where('posts_id', '=', $post->id)->delete();
+        }
+        Post::where('users_id', '=', Auth::user()->id)->delete();
+        UsersCategories::where('users_id', '=', Auth::user()->id)->delete();
+        userInfo::where('users_id', '=', Auth::user()->id)->delete();
+        User::where('id', '=', Auth::user()->id)->delete();
     }
 
 }

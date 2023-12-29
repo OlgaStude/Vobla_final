@@ -17,14 +17,19 @@ class categoryResource extends JsonResource
     public function toArray($request)
     {
 
-        $exists = UsersCategories::where([
-                ['users_id', '=', Auth::user()->id],
-                ['categories_id', '=', $this->id]
-        ])->exists();
+        if(Auth::check()){
+            $exists = UsersCategories::where([
+            ['users_id', '=', Auth::user()->id], 
+            ['categories_id', '=', $this->id]
+            ]
+            )->exists();
+    
+            $users = $exists;
+        }else{
+            $users = false;
+        }
 
-        $users = $exists;
-
-
+        
         return [
             'name' => $this->name,
             'id' => $this->id,

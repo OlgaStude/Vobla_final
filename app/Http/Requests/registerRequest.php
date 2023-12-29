@@ -36,8 +36,8 @@ class registerRequest extends FormRequest
         return [
             'login.required' => 'Логин обязателен',
             'login.unique' => 'Этот логин уже занят',
-            'login.regex' => 'Логин может быть только латиницей',
             'email.unique' => 'Эта почта уже занята',
+            'login.regex' => 'Логин может быть только латиницей',
             'password.required' => 'Пароль обязателен',
             'password.min' => 'Пароль не менее 8 символов',
             'avatar.mimes' => 'Изображения могут быть только jpg, jpeg, png форматов',
