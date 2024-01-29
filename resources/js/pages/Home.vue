@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="last_posts">Последние публикации</h1>
     <div class="post_main_container">
-      <div v-for="post of posts" class="post_div">
+      <div v-for="post of posts" class="inside_div">
         <div class="user_post_info">
           <a :href="$router.resolve({ name: 'userPage', params: { id: post.user_id } }).href"><img class="post_user_avatar_main" :src="'/storage/profile_pics/'+post.user_avatar"></a> 
           <a class="post_user_name" :href="$router.resolve({ name: 'userPage', params: { id: post.user_id } }).href"><p>{{ post.user_name }}</p></a>
@@ -32,90 +32,75 @@
   src: url(../../../storage/app/public/fonts/FiraSansCondensed-SemiBold.ttf);
 }
 
-.post_main_container{
-  width: 431px;
-  
+.user_post_info{
+  display: flex;
 }
-.post_div{
-  width: 100%;
-  background-color: #EDF4E9;
-  margin-bottom: 20px;
-  padding: 19px 19px 0px 19px;
-  border-radius: 20px;
-  overflow: hidden;
-  height: fit-content;
-
+.post_user_name, .post_user_time{
+  margin-top: 10px;
+}
+.post_user_name{
+  max-width: 80px;
+  margin-left: 10px;
 }
 .post_user_avatar_main{
-    width: 65px;
-    height: 65px;
-    border-radius: 50px;
-  }
+  width: 44px;
+  height: 44px;
+  border-radius: 30px;
+}
+.inside_div {
+  width: 333px;
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  margin-bottom: 24px;
+  border: 0;
+  break-inside: avoid;
+  border-radius: 12px;
+}
+.inside_div:nth-child(1n){
+  box-shadow: 0px -7px 11px 3px #FFEAEF
+}
+.inside_div:nth-child(2n){
+  box-shadow: 0px -7px 11px 3px #FCEBE2
+}
+.inside_div:nth-child(3n){
+  box-shadow: 0px -7px 11px 3px #F8F4CE
+}
+.inside_div:nth-child(4n){
+  box-shadow: 0px -7px 11px 3px #E4F4B9
+}
+.inside_div:nth-child(5n){
+  box-shadow: 0px -7px 11px 3px rgba(205, 180, 229, 0.25)
+}
+
 dt{
-  width: 100%;
-  line-height: 40px;
-  font-size: 20px;
-  font-family: "text";
-  margin-bottom: -5px;
+  border-radius: 12px;
+  padding-left: 21px;
+  padding-bottom: 10px;
 }
-  dt img, iframe{
-    width: calc(100% + 42px);
-    margin-left: -23px; 
-  }
-  iframe{
-    height: 240px;
-  }
-
-p,
-input,
-button,
-a {
-
-  font-family: text;
+.user_post_info{
+  padding-top: 23px;
+  padding-left: 21px;
 
 }
 
-h1 {
-  font-size: 48px;
-  font-family: title;
+.inside_div dt img, iframe{
+  width: calc(100% + 20px);
+  margin-left: -22px; 
 }
 
-.post_div {
-  width: 500px;
-}
-
-.last_posts {
-  margin-top: 4%;
-  text-align: center;
+.inside_div a {
+  color: black;
+  text-decoration: none;
 }
 
 .post_main_container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  margin-top: 2%;
-  margin-left: 6%;
-  grid-column-gap: 20%;
-}
-
-.user_post_info {
-  display: flex;
-  font-size: 20px;
-  column-gap: 10%;
-}
-
-.user_post_info p {
-  color: black;
-  margin-top: 5%;
-}
-
-.post_user_name {
-  margin-top: 5%;
-  white-space: nowrap;
-}
-
-.post_user_time {
-  position: relative;
-  left: 30%;
+  margin: auto;
+  margin-bottom: 30px;
+  padding-top: 20px;
+  width: 1470px;
+  column-count: 4;
+  column-gap: 10px;
 }
 
 @media (max-width: 320px) {
