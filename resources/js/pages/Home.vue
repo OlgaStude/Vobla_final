@@ -1,16 +1,18 @@
 <template>
   <div class="container">
     <h1 class="last_posts">Последние публикации</h1>
-    <div class="post_main_container">
-      <div v-for="post of posts" class="inside_div">
-        <div class="user_post_info">
-          <a :href="$router.resolve({ name: 'userPage', params: { id: post.user_id } }).href"><img class="post_user_avatar_main" :src="'/storage/profile_pics/'+post.user_avatar"></a> 
-          <a class="post_user_name" :href="$router.resolve({ name: 'userPage', params: { id: post.user_id } }).href"><p>{{ post.user_name }}</p></a>
-          <p class="post_user_time">{{ post.time }}</p>
+     <div class="post_main_container1">
+        <div v-for="post of posts" class="inside_div_main">
+          <div class="user_post_info">
+            <a :href="$router.resolve({ name: 'userPage', params: { id: post.user_id } }).href"><img class="post_user_avatar_main" :src="'/storage/profile_pics/' + post.user_avatar"></a>
+            <div class="user_post_info_inside">
+              <a class="post_user_name" :href="$router.resolve({ name: 'userPage', params: { id: post.user_id } }).href"><p>{{ post.user_name }}</p></a>
+              <p class="post_user_time">{{ post.time }}</p>
+            </div>
+          </div>
+          <dt class="dt_not_modify" v-html="post.body"></dt>
         </div>
-        <dt class="dt_not_modify" v-html="post.body"></dt>
       </div>
-    </div>
 
   </div>
 </template>
@@ -32,22 +34,40 @@
   src: url(../../../storage/app/public/fonts/FiraSansCondensed-SemiBold.ttf);
 }
 
+p, input, select, button {
+  font-family: text;
+}
+
+h1 {
+  font-family: title;
+}
+
+.last_posts{
+  font-size: 48px;
+  margin-top: 56px;
+  margin-left: 225px;
+  margin-bottom: 46px;
+}
+
 .user_post_info{
   display: flex;
-}
-.post_user_name, .post_user_time{
-  margin-top: 10px;
+  align-items: center;
+  column-gap: 16px;
+  margin-bottom: 22px;
 }
 .post_user_name{
-  max-width: 80px;
-  margin-left: 10px;
+  font-size: 20px;
+}
+.post_user_time{
+  font-size: 14px;
+  color: #828282;
 }
 .post_user_avatar_main{
   width: 44px;
   height: 44px;
   border-radius: 30px;
 }
-.inside_div {
+.inside_div_main {
   width: 333px;
   margin: 0;
   display: grid;
@@ -57,19 +77,19 @@
   break-inside: avoid;
   border-radius: 12px;
 }
-.inside_div:nth-child(1n){
+.inside_div_main:nth-child(1n){
   box-shadow: 0px -7px 11px 3px #FFEAEF
 }
-.inside_div:nth-child(2n){
+.inside_div_main:nth-child(2n){
   box-shadow: 0px -7px 11px 3px #FCEBE2
 }
-.inside_div:nth-child(3n){
+.inside_div_main:nth-child(3n){
   box-shadow: 0px -7px 11px 3px #F8F4CE
 }
-.inside_div:nth-child(4n){
+.inside_div_main:nth-child(4n){
   box-shadow: 0px -7px 11px 3px #E4F4B9
 }
-.inside_div:nth-child(5n){
+.inside_div_main:nth-child(5n){
   box-shadow: 0px -7px 11px 3px rgba(205, 180, 229, 0.25)
 }
 
@@ -84,17 +104,17 @@ dt{
 
 }
 
-.inside_div dt img, iframe{
+.inside_div_main dt img, iframe{
   width: calc(100% + 20px);
   margin-left: -22px; 
 }
 
-.inside_div a {
+.inside_div_main a {
   color: black;
   text-decoration: none;
 }
 
-.post_main_container {
+.post_main_container1 {
   margin: auto;
   margin-bottom: 30px;
   padding-top: 20px;
@@ -105,17 +125,39 @@ dt{
 
 @media (max-width: 320px) {
 
-  h1 {
-    font-size: 15px;
+  .last_posts {
+    font-size: 18px !important;
+    margin: 20px !important;
   }
 
-  .post_main_container {
+  .post_main_container1 {
     display: block;
-    margin-left: 25%;
+  }
+  .container{
+    width: 320px;
+
   }
 
-  .post_div {
-    width: 151px;
+  .inside_div_main {
+    width: 320px;
+    
+    margin: 0;
+    margin-left: -10px;
+    display: block;
+    margin-bottom: 24px;
+    border: 0;
+    border-radius: 12px;
+  }
+  .post_main_container1 {
+    margin: auto;
+    margin-bottom: 30px;
+    padding-top: 10px;
+    width: 300px;
+    column-count: 1;
+  }
+  .inside_div_main dt img, iframe{
+    width: calc(100%);
+    margin-left: -22px; 
   }
 
   .post_user_avatar {
@@ -134,8 +176,8 @@ dt{
   }
 
   dt {
-    font-size: 6px;
-    line-height: 10px;
+    font-size: 16px;
+    line-height: 22px;
   }
   iframe{
     height: 100px;
@@ -155,6 +197,9 @@ dt{
 }
 
 </style>
+
+
+
 
 <script>
 export default {

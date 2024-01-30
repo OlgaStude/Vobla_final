@@ -1,51 +1,41 @@
 <template>
     <div class="container">
-    <h1 v-if="user.users_id == page_owner.users_id" class="greetings">Приветствуем, {{ page_owner.name }}!</h1>
     <div class="user_info">
+    <div class="user_info_upper">
     <img :src="'/storage/profile_pics/'+page_owner.avatar" class="owner_img" style="width: 125px; height: 125px; border-radius: 100%;">
-    <div class="user_info_div">
-    <div class="info_div1">
-    <p class="user_info_name_title">Имя и Фамилия</p>
     <p class="user_info_name_text">{{ page_owner.name }}</p>
-    </div>
-    <div v-if="user.users_id == page_owner.users_id" class="info_div2">
-      <p class="user_info_login_title">Логин</p>
-      <p class="user_info_login_text">{{ login }}</p>
-    </div>
-    <p class="info_category_chosen">Выбранные категории</p>    
-      <div class="info_category_div">
-        <div v-for="user_category in page_owner.categories" class="info_category">
-          <p>{{ user_category.name}}</p>
-        </div>
-      </div> 
-    </div>
-    </div>
-    <div  v-if="user.users_id == page_owner.users_id" class="info_buttons">
-      <a href="/updateinfo"><button class="profile_update_btn">Редактировать профиль</button>
-      </a>
-      <br>
-      <button @click="deleteUser()" class="profile_delete_btn">Удалить профиль</button>
-    </div>
-    <button v-else-if="!is_a_friend && user != []" @click="send_request" class="add_friend_profile_btn">Добавить в друзья</button>
+        <div  v-if="user.users_id == page_owner.users_id" class="info_buttons">
+        <a href="/updateinfo"><button class="profile_update_btn">Редактировать</button>
+        </a>
+        <br>
+        <button @click="deleteUser()" class="profile_delete_btn">Удалить профиль</button>
+      </div>
+      <button v-else-if="!is_a_friend && user != []" @click="send_request" class="add_friend_profile_btn">Добавить в друзья</button>
     
-    <div v-else-if="user != []" class="info_buttons">
-      <a :href="$router.resolve({ name: 'Chat', params: { id: page_owner.user_id } }).href"><button class="write_friend_profile_btn">Написать</button></a>
-      <br>
-      <button @click="deleteFriend" class="delete_friend_profile_btn">Удалить из друзей</button>
+      <div v-else-if="user != []" class="info_buttons">
+        <a :href="$router.resolve({ name: 'Chat', params: { id: page_owner.user_id } }).href"><button class="write_friend_profile_btn">Написать</button></a>
+        <br>
+        <button @click="deleteFriend" class="delete_friend_profile_btn">Удалить из друзей</button>
+      </div>
+    </div>
+        <div>
+          <p class="info_category_chosen">Выбранные категории</p> 
+          <div class="info_category_div">
+            <div v-for="user_category in page_owner.categories" class="info_category">
+              <p>{{ user_category.name }}</p>
+            </div>
+          </div> 
+        </div>
+        <button @click="open_form" class="post_write_btn">Написать пост</button>
     </div>
     
 
     
 
   <div v-if="user.users_id == page_owner.users_id && form_is_on" id="create_posts_div">
-        <p class="post_create_category_choose">Выберите категории</p>
-        <div class="register_category_div">
-          <div v-for="i in index" class="register_category_div2">
-          <input class="post_write_img" type="checkbox" :value="categories[i - 1].name" name="category" :id="'box_' + i">
-          <label :for="'box_' + i">{{ categories[i - 1].name }}</label> 
-      </div>
-      </div>
-      <p>{{ errors.category_name }}</p>
+        <h1>Создание поста</h1>
+        <div class="post_create_div">
+    <div>
     <div class="div_border" placeholder="Веедите текст поста" @keyup="image_delete($event)" @paste="link_ut($event)" id="img-from-local-storage" contenteditable="true">
       Введите текст поста
     </div>
@@ -62,12 +52,21 @@
     <button @click="makePost" class="post_write_btn">Создать пост</button>
     <button @click="close_form" class="post_close_btn">Закрыть</button>
     </div>
-
-    
+  </div>
+          <div class="category_div_post">
+          <p class="post_create_category_choose">Выберите категории</p>
+          <div class="register_category_div post">
+            <div v-for="i in index" class="register_category_div2">
+            <input class="post_write_img" type="checkbox" :value="categories[i - 1].name" name="category" :id="'box_' + i">
+            <label :for="'box_' + i">{{ categories[i - 1].name }}</label> 
+        </div>
+        </div>
+        <p>{{ errors.category_name }}</p>
+        </div>
+    </div>
   </div>
   <div v-else-if="user.users_id == page_owner.users_id" class="post_control_div">
-  <h1>Управление постами</h1>
-  <button @click="open_form" class="post_write_btn">Написать пост</button>
+  <h1>Публикации</h1>
   </div>
 
 <!-- Нежная экосистемма !не трогать! -->
@@ -134,16 +133,15 @@
     text-align: center;
     padding-top: 7px;
     cursor: pointer;
-    margin-top: 3%;
+    margin-top: 5%;
     margin-bottom: 4px;
-    margin-left: 35%;
     box-sizing: border-box;
     background-color: #fff;
     overflow: hidden;
 }
 .input-file_modify{
     display: none;
-    width: 467px;
+    width: 333px;
     height: 54px;
     border: 2px solid black;
     border-radius: 50px;
@@ -168,11 +166,13 @@
 .post_div_user{
   width: 100%;
   margin-bottom: 20px;
-  overflow: hidden;
   height: fit-content;
+  break-inside: avoid;
+
 }
 .div_border{
   border: 1px solid black;
+  border-radius: 12px;
   padding: 20px;
   height: 100px;
 }
@@ -182,98 +182,113 @@
 .save_change_btn{
   display: none;
 }
-
-.post_user{
-  width: 471px;
-}
-.post_user_container{
-  width: 100%;
-  background-color: #EDF4E9;
-  margin-bottom: 20px;
-  border-radius: 20px;
-  padding: 19px 19px 0px 19px;
-  overflow: hidden;
-}
-dt{
-  word-wrap: break-word;
-}
-dt.dt_not_modify_user, dt.dt_modify_user{
-  width: 100%;
-  line-height: 40px;
-  margin-bottom: 0;
-}
-  dt img, iframe{
-    width: calc(100% + 42px);
-    margin-left: -23px; 
-  }
-  iframe{
-    height: 240px;
-  }
 .dt_modify{
   display: none;
-  padding: 40px;
-
-}
-.dt_not_modify{
-  display: block;
 }
 
-.greetings {
-  text-align: center;
-  margin-top: 4%;
+.last_posts{
+  font-size: 48px;
+  margin-top: 56px;
+  margin-left: 225px;
+  margin-bottom: 46px;
 }
 
-.user_info {
-  text-align: center;
-  width: 622px;
-  height: 437px;
-  border-radius: 50px;
-  border: 2px solid black;
-  margin-top: 2%;
-  margin-left: 34%;
+.user_post_info{
   display: flex;
+  align-items: center;
+  column-gap: 16px;
+  margin-bottom: 22px;
+}
+.post_user_name{
+  font-size: 20px;
+}
+.post_user_time{
+  font-size: 14px;
+  color: #828282;
+}
+.post_user_avatar_main{
+  width: 44px;
+  height: 44px;
+  border-radius: 30px;
+}
+.post_user_container {
+  width: 333px;
+  margin: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  margin-bottom: 24px;
+  border: 0;
+  break-inside: avoid;
+  border-radius: 12px;
+}
+.post_user_container:nth-child(1n){
+  box-shadow: 0px -7px 11px 3px #FFEAEF
+}
+.post_user_container:nth-child(2n){
+  box-shadow: 0px -7px 11px 3px #FCEBE2
+}
+.post_user_container:nth-child(3n){
+  box-shadow: 0px -7px 11px 3px #F8F4CE
+}
+.post_user_container:nth-child(4n){
+  box-shadow: 0px -7px 11px 3px #E4F4B9
+}
+.post_user_container:nth-child(5n){
+  box-shadow: 0px -7px 11px 3px rgba(205, 180, 229, 0.25)
 }
 
-.user_info img {
-  margin-left: 5%;
-  margin-top: 15%;
+.dt_modify{
+  padding: 30px;
+}
+.dt_modify img, iframe{
+  width: calc(100% + 30px);
+  margin-left: 20px; 
 }
 
-.user_info_div {
-  text-align: start;
+dt{
+  border-radius: 12px;
+  padding-left: 21px;
+  padding-bottom: 10px;
+}
+.user_post_info{
+  padding-top: 23px;
+  padding-left: 21px;
+
 }
 
-
-
-.user_info_name_title, .user_info_login_title {
-  font-size: 24px;
+.post_user_container dt img, iframe{
+  width: calc(100% + 20px);
+  margin-left: -22px; 
 }
 
-.user_info_name_text, .user_info_login_text {
-  font-size: 32px;
-  white-space: nowrap;
+.post_user_container a {
+  color: black;
+  text-decoration: none;
 }
 
-.info_div1{
-  margin-top: 20%;
-  margin-left: 15%;
-  width: 350px;
+.post_main_container {
+  margin: auto;
+  margin-bottom: 30px;
+  padding-top: 20px;
+  width: 1470px;
+  column-count: 4;
+  column-gap: 10px;
 }
 
-.info_div2 {
-  margin-left: 15%;
-  margin-top: 10%;
-  width: 350px;
-}
 
 .info_category_div {
+  margin-top: -1%;
   display: flex;
-  margin-top: 5%;
-  margin-right: 25%;
+  margin-right: 15%;
   font-size: 32px;
   text-overflow: ellipsis;
   overflow-x: scroll;
   width: 400px;
+}
+
+.post {
+  margin-left: -1%;
+  text-align: start;
 }
 
 .info_category_div::-webkit-scrollbar {
@@ -288,9 +303,8 @@ dt.dt_not_modify_user, dt.dt_modify_user{
 
 
 .info_category_chosen {
+  margin-top: 2%;
   font-size: 24px;
-  margin-left: 10%;
-  margin-top: 10%;
 }
 
 .info_category {
@@ -299,36 +313,40 @@ dt.dt_not_modify_user, dt.dt_modify_user{
 
 .profile_update_btn {
   
-  width: 328px;
-  height: 50px;
+  width: 267px;
+  height: 54px;
   border-radius: 15px;
   font-size: 24px;
   font-family: text;
-  background-color: #C1D7A4;
+  background-color: #C2E6B9;
+  color: white;
   border: none;
   cursor: pointer;
-  margin-top: 2%;
 }
 
 .profile_delete_btn {
-  width: 328px;
-  height: 50px;
+  width: 214px;
+  height: 54px;
   border-radius: 15px;
   font-size: 24px;
   font-family: text;
-  background-color: #F4BAB9;
+  background-color: #FAA5A5;
+  color: white;
   border: none;
   cursor: pointer; 
-  margin-top: 2%;
 }
 
 .info_buttons {
-  text-align: center;
-  display: block;
+  width: 1200px;
+  margin-left: 2%;
+  margin-top: 1.5%;
+  column-gap: 25%;
+  display: flex;
 }
 
 .post_control_div {
-  text-align: center;
+  text-align: start;
+  margin-left: 2%;
 }
 
 .post_control_div h1 {
@@ -336,15 +354,25 @@ dt.dt_not_modify_user, dt.dt_modify_user{
 }
 
 .post_write_btn {
-  width: 328px;
-  height: 50px;
-  border-radius: 15px;
+  width: 267px;
+  height: 54px;
+  border-radius: 12px;
   font-size: 24px;
   font-family: text;
-  background-color: #C1D7A4;
+  background-color: #C2E6B9;
+  color: white;
   border: none;
   cursor: pointer;
   margin-top: 2%;  
+}
+
+.category_div_post {
+  margin-top: 1%;
+  margin-left: 5%;
+}
+
+.post_create_div {
+  display: flex;
 }
 
 .div_border {
@@ -353,12 +381,11 @@ dt.dt_not_modify_user, dt.dt_modify_user{
   border-radius: 50px;
   text-align: start;
   font-size: 24px;
-  margin-top: 2%;
-  margin-left: 30%;
+  margin-top: 5%;
 }
 
 #create_posts_div {
-  text-align: center;
+  margin-left: 2%;
   margin-top: 4%;
 }
 
@@ -377,7 +404,8 @@ dt.dt_not_modify_user, dt.dt_modify_user{
   border-radius: 15px;
   font-size: 24px;
   font-family: text;
-  background-color: #F4BAB9;
+  background-color: #FAA5A5;
+  color: white;
   border: none;
   cursor: pointer; 
   margin-top: 2%;
@@ -390,22 +418,23 @@ dt.dt_not_modify_user, dt.dt_modify_user{
   border-radius: 15px;
   font-size: 24px;
   font-family: text;
-  background-color: #C1D7A4;
+  background-color: #C2E6B9;
+  color: white;
   border: none;
   cursor: pointer;
   margin-top: 2%;   
 }
 
 .delete_friend_profile_btn {
-  width: 328px;
-  height: 50px;
+  width: 214px;
+  height: 54px;
   border-radius: 15px;
   font-size: 24px;
   font-family: text;
-  background-color: #F4BAB9;
+  color: white;
+  background-color: #FAA5A5;
   border: none;
   cursor: pointer; 
-  margin-top: 2%; 
 }
 
 .add_friend_profile_btn {
@@ -413,6 +442,7 @@ dt.dt_not_modify_user, dt.dt_modify_user{
 }
 
 .post_create_category_choose {
+  margin-top: 1%;
   font-size: 24px;
 }
 
@@ -421,9 +451,9 @@ dt.dt_not_modify_user, dt.dt_modify_user{
   height: 50px;
   border-radius: 15px;
   border: none;
-  background-color: #C1D7A4;
+  background-color: #C2E6B9;
+  color: white;
   font-size: 24px;
-  margin-left: 10%;
   margin-top: 4%;
 }
 .post_user_avatar{
@@ -438,9 +468,9 @@ dt.dt_not_modify_user, dt.dt_modify_user{
   height: 50px;
   border-radius: 15px;
   border: none;
-  background-color: #F4BAB9;
+  background-color: #FAA5A5;
+  color: white;
   font-size: 24px;
-  margin-left: 10%;
   margin-top: 4%;
 }
 
@@ -492,8 +522,26 @@ dt.dt_not_modify_user, dt.dt_modify_user{
 }
 
 @media (max-width: 320px) {
+  .post_main_container {
+    margin: auto;
+    margin-bottom: 30px;
+    padding-top: 20px;
+    width: 320px;
+    columns: 1;
+    column-gap: 10px;
+  }
+  .post_main_container button{
+    width: 320px;
+    height: 30px;
+    margin-left: 0;
+    font-size: 16px;
+  }
   iframe{
     height: 100px;
+  }
+
+  .info_buttons {
+    column-gap: 2%;
   }
 
   .user_info {
@@ -513,6 +561,11 @@ dt.dt_not_modify_user, dt.dt_modify_user{
   .owner_img {
     height: 50px !important;
     width: 50px !important;
+  }
+
+  .post_control_div {
+    text-align: center;
+    margin-top: 15%;
   }
 
   .info_div1 {
@@ -535,13 +588,15 @@ dt.dt_not_modify_user, dt.dt_modify_user{
 
   .info_category_chosen {
     font-size: 8px;
+    margin-bottom: 4%;
     margin-top: 15%;
     margin-left: 5%;
     width: 100px;
   }
 
   .info_category_div {
-    margin-top: 15%;
+    margin-left: 2%;
+    margin-top: 5%;
     width: 120px;
   }
 
@@ -549,15 +604,26 @@ dt.dt_not_modify_user, dt.dt_modify_user{
     font-size: 10px;
   }
 
+  .post_create_div{
+    flex-direction: column;
+
+  }
 
 
   .profile_update_btn, .profile_delete_btn {
     width: 98px;
     height: 16px;
     font-size: 8px;
+    border-radius: 4px
+  }
+
+  .profile_delete_btn {
+    width: 75px;
+    margin-top: 2.5%;
   }
 
   .post_create_category_choose {
+    margin-right: 5%;
     font-size: 8px;
   }
 
@@ -576,12 +642,35 @@ dt.dt_not_modify_user, dt.dt_modify_user{
     font-size: 8px;
   }
 
+  .post_write_btn {
+    margin-left: 2%;
+  }
+
+  #create_posts_div {
+    text-align: center;
+  }
+
+  #create_posts_div p { 
+    font-size: 8px;
+    margin-right: 5%;
+  }
+
   .post_close_btn {
     margin-left: 0.1%;
   }
 
   .post_write_btns_div {
-    display: inline-block;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    column-gap: 2%;
+    margin-left: 15%;
+  }
+
+  .post {
+    margin-top: 4%;
+    margin-left: 24%;
+    width: 150px;
   }
 
   .add_friend_profile_btn, .delete_friend_profile_btn, .write_friend_profile_btn {
@@ -614,14 +703,15 @@ dt.dt_not_modify_user, dt.dt_modify_user{
   }
 
   .modify_btn, .delete_post_btn, .save_change_btn2, .cancel_change_btn {
-    width: 98px;
+    width: 125px;
     height: 16px;
     font-size: 8px;
-    margin-left: 16%;
+    margin-left: 12%;
+    border-radius: 4px;
   }
 
   .input-file_new{
-    width: 153px;
+    width: 100%;
     height: 16px;
     border: 1px solid black;
     border-radius: 50px;
@@ -633,26 +723,25 @@ dt.dt_not_modify_user, dt.dt_modify_user{
   }
 
   .input-file_modify{
-    width: 150px;
-    height: 16px;
+    width: 320px;
+    height: 30px;
     border: 1px solid black;
     border-radius: 50px;
-    font-size: 8px;
+    font-size: 16px;
     padding-top: 3px;
     cursor: pointer;
-    margin: 10px auto;
+    margin: 0;
     margin-bottom: 4px;
   }
 
   .update_post_category_div {
   justify-content: center;
-  margin-left: 15%;
   margin-top: 1%;
-  width: 80px;
+  width: 150px;
   height: 37px;
   text-overflow: ellipsis;
   overflow-x: scroll;
-  padding-left: 30%;
+  padding-left: 2%;
   padding-bottom: 1%;
 }
 
@@ -686,7 +775,7 @@ dt.dt_not_modify_user, dt.dt_modify_user{
 }
 
 .dt_modify{
-  padding: 20px;
+  padding: 40px;
 
 }
 dt.dt_not_modify_user, dt.dt_modify_user{

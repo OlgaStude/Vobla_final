@@ -28,6 +28,7 @@
         <input @click="checkmark" type="checkbox" id="check" class="input_checkbox">
         <label class="checkbox_label" for="check">Я согласен на обработку персональных данных</label>
         <button class="register_btn" id="send_btn" disabled @click="register">Зарегистрироваться</button>
+        <p class="with_us">Уже с нами? <a href="">Войдите!</a></p>
       </form>
     </div>
   </div>
@@ -67,23 +68,31 @@
 }
 
 .register_div {
+  background: linear-gradient(90deg, #F8F8FF 0.02%, rgba(255, 237, 237, 0.07) 32.25%, rgba(241, 239, 212, 0.12) 70.03%, #DDF2B0 99.59%) !important;
+  height: 100vh;
   text-align: center;
 }
 
 .register_div h1 {
-  margin-top: 10%;
+  position: relative;
+  top: 10vh;
+}
 
+.register_div form {
+  margin-top: 5%;
 }
 
 form input {
-  width: 508px;
+  width: 580px;
   height: 54px;
-  border: 2px solid black;
-  border-radius: 50px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid black;
+  outline: none;
+  padding-left: 0.5%;
   background-color: #D9D9D9 0%;
-  font-size: 24px;
+  font-size: 32px;
   color: black;
-  padding: 1%;
   margin-top: 2%;
 }
 
@@ -99,11 +108,12 @@ form input {
 }
 
 .register_btn {
-  width: 306px;
-  height: 62px;
+  width: 582px;
+  height: 52px;
   border-radius: 15px;
   border: none;
-  background-color: #C1D7A4;
+  background-color: #FAA5A5;
+  color: white;
   font-size: 24px;
   margin-left: auto;
   margin-right: auto;
@@ -114,23 +124,21 @@ form input {
 }
 
 form p {
-  font-size: 20px;
-  color: #36522A;
+  font-size: 16px;
+  color: #D22626;
   text-align: start;
-  margin-left: 38%;
+  margin-left: 35.5%;
   margin-top: 0.5%;
 }
 
 .register_category_div {
   text-align: start;
   display: flex;
-  justify-content: center;
-  margin-left: 42.5%;
+  margin-left: 35%;
   margin-top: 1%;
-  width: 250px;
+  width: 580px;
   text-overflow: ellipsis;
   overflow-x: scroll;
-  padding-left: 3%;
   padding-bottom: 1%;
   margin-bottom: 20px;
 }
@@ -138,8 +146,7 @@ form p {
 .register_category_div2 {
   display: flex;
   align-items: center;
-  flex-direction: column;
-  margin-left: 10%;
+  margin-left: 5%;
 }
 
 .register_category_div2 input {
@@ -154,10 +161,10 @@ form p {
 }
 
 .interest_category {
-  font-size: 24px;
+  font-size: 32px;
   color: black;
-  margin-top: 4%;
-  margin-left: 42.5%
+  margin-top: 2%;
+  margin-left: 35.5%
 }
 
 .register_category_div::-webkit-scrollbar {
@@ -169,6 +176,19 @@ form p {
         .register_category_div::-webkit-scrollbar-thumb {
         background: #1D1A0F; 
         }
+
+.with_us {
+  font-size: 24px;
+  color: black;
+  position: relative;
+  bottom: 2vh;
+  margin-left: 44%;
+}
+
+.with_us a {
+  color: #FAA5A5;
+  text-decoration: underline;
+}
 
 @media (max-width: 320px) {
 
@@ -189,13 +209,14 @@ form p {
 }
 
 .register_div h1 {
-  margin-top: 6%;
+  top: 3vh;
 }
 
 form input {
   width: 153px;
   height: 16px;
-  border: 1px solid black;
+  border: none;
+  border-bottom: 1px solid black;
   font-size: 8px;
 }
 
@@ -236,9 +257,17 @@ form input {
 }
 
 .register_btn {
-  width: 84px;
+  width: 153px;
   height: 14px;
   font-size: 8px;
+  border-radius: 4px;
+}
+
+.with_us {
+  margin-top: 7%;
+  margin-left: 40%;
+  font-size: 8px;
+  margin-bottom: 100%;
 }
 
 form p { 

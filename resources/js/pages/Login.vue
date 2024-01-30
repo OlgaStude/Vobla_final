@@ -24,36 +24,56 @@
       </form>
       <p class="login_error">{{ errors.error }}</p>
 
-    <button class="login_btn" type="submit" @click="handleSubmit">Войти</button>
+    <button class="login_btn" type="submit" @click="handleSubmit">Авторизация</button>
+    
   </div>
+
   </div>
 </template>
 
+
+
 <style>
+
 .login_div {
   text-align: center;
+  background: linear-gradient(90deg, #F8F8FF 0.02%, rgba(255, 237, 237, 0.07) 32.25%, rgba(241, 239, 212, 0.12) 70.03%, #DDF2B0 99.59%) !important;
 }
 
 .login_div h1 {
-  margin-top: 10%;
+  position: relative;
+  top: 10vh;
 
 }
 
+.login_div form {
+  margin-top: 5%;
+}
+
 .login_btn {
-  width: 263px;
-  height: 50px;
+  width: 582px;
+  height: 52px;
   border-radius: 15px;
   border: none;
   font-size: 24px;
-  background-color: #C1D7A4;
+  background-color: #FAA5A5;
+  color: white;
   margin-top: 2%;
   cursor: pointer;
+  margin-bottom: 25%;
 }
 
 .login_error {
   font-size: 20px;
   color: #36522A;
   margin-top: 0.5%;
+}
+
+
+
+.with_us_login a {
+  color: #FAA5A5;
+  text-decoration: underline;
 }
 
 @media (max-width: 320px) {
@@ -67,6 +87,26 @@
     height: 14px;
     font-size: 8px;
   }
+
+  .login_div form {
+    margin-top: 6%;
+  }
+
+  .login_div h1 {
+    top: 3vh;
+  }
+
+  .login_btn {
+    width: 153px;
+    margin-bottom: 120%;
+    border-radius: 4px;
+  }
+
+  .login_div input {
+    border: none;
+    border-bottom: 1px solid black;
+  }
+
 }
 
 </style>
